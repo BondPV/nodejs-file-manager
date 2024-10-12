@@ -1,8 +1,9 @@
 import process from 'node:process';
-import { printOsInfo } from './os/os.js'
-import { changeDirectory } from './cd/cd.js'
-import { printFilesList } from './ls/ls.js'
-import { changeDirectoryUp } from './up/up.js'
+import { printOsInfo } from './os/printOsInfo.js'
+import { changeDirectory } from './cd/changeDirectory.js'
+import { printFilesList } from './ls/printFilesList.js'
+import { changeDirectoryUp } from './up/changeDirectoryUp.js'
+import { calculateHash } from './hash/calculateHash.js'
 import { getUsernameFromArgs, getCurrentDirectory, currentDirectoryMessage, welcomeMessage, exitMessage } from "./helpers.js";
 
 const run = () => {
@@ -27,6 +28,9 @@ const run = () => {
                     break;
                 case 'os':
                     printOsInfo(argument);
+                    break;
+                case 'hash':
+                    await calculateHash(argument);
                     break;
                 case '.exit':
                     exitMessage(username);
