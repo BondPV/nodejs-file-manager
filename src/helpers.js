@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 export const getUsernameFromArgs = () => {
     const usernameArg = process.argv.find(arg => arg.startsWith('--username='));
 
@@ -12,4 +14,6 @@ export const exitMessage = (username) => {
     console.log(`Thank you for using File Manager, ${username}, goodbye!`);
 };
 
-export const currentDirectoryMessage = () => console.log(`You are currently in ${process.cwd()}`)
+export const getCurrentDirectory = process.cwd;
+
+export const currentDirectoryMessage = () => console.log(`You are currently in ${getCurrentDirectory()}`)

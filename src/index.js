@@ -1,7 +1,8 @@
-import process, { stdin, exit } from 'node:process';
-import { printOSInfo } from './os/os.js'
+import process from 'node:process';
+import { printOsInfo } from './os/os.js'
 import { changeDirectory } from './cd/cd.js'
-import { getUsernameFromArgs, currentDirectoryMessage, welcomeMessage, exitMessage } from "./helpers.js";
+import { printFilesList } from './ls/ls.js'
+import { getUsernameFromArgs, getCurrentDirectory, currentDirectoryMessage, welcomeMessage, exitMessage } from "./helpers.js";
 
 const run = () => {
     const username = getUsernameFromArgs();
@@ -9,30 +10,37 @@ const run = () => {
     welcomeMessage(username);
     currentDirectoryMessage();
 
-    stdin.on('data', (data) => {
+    process.stdin.on('data', async (data) => {
         const [command, argument] = data.toString().trim().split(' ');
 
-        switch (command) {
-            case 'cd':
-                changeDirectory(argument);
-                break;
-            case 'os':
-                printOSInfo(argument);
-                break;
-            case '.exit':
-                exitMessage(username);
-                exit();
-            default:
-                console.log('Invalid input');
-                break;
+        const switchCommand = async () => {
+            switch (command) {
+                case 'cd':
+                    changeDirectory(argument);
+                    break;
+                case 'ls':
+                    await printFilesList(getCurrentDirectory());
+                    break;
+                case 'os':
+                    printOsInfo(argument);
+                    break;
+                case '.exit':
+                    exitMessage(username);
+                    process.exit();
+                default:
+                    console.log('Invalid input');
+                    break;
+            }
         }
+
+        await switchCommand();
 
         currentDirectoryMessage();
     });
 
     process.on('SIGINT', () => {
         exitMessage(username);
-        exit();
+        process.exit();
     });
 };
 

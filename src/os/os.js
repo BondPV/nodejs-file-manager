@@ -1,6 +1,6 @@
 import os from 'node:os';
 
-export const printOSInfo = (argument) => {
+export const printOsInfo = (argument) => {
     if (!argument) {
         console.log('Missing argument');
         return;
