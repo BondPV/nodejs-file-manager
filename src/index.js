@@ -2,6 +2,7 @@ import process from 'node:process';
 import { printOsInfo } from './os/os.js'
 import { changeDirectory } from './cd/cd.js'
 import { printFilesList } from './ls/ls.js'
+import { changeDirectoryUp } from './up/up.js'
 import { getUsernameFromArgs, getCurrentDirectory, currentDirectoryMessage, welcomeMessage, exitMessage } from "./helpers.js";
 
 const run = () => {
@@ -17,6 +18,9 @@ const run = () => {
             switch (command) {
                 case 'cd':
                     changeDirectory(argument);
+                    break;
+                case 'up':
+                    changeDirectoryUp();
                     break;
                 case 'ls':
                     await printFilesList(getCurrentDirectory());
