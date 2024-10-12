@@ -11,3 +11,5 @@ export const  welcomeMessage = (username) => {
 export const exitMessage = (username) => {
     console.log(`Thank you for using File Manager, ${username}, goodbye!`);
 };
+
+export const currentDirectoryMessage = () => console.log(`You are currently in ${process.cwd()}`)
