@@ -10,7 +10,7 @@ import { changeDirectory } from './cd/changeDirectory.js';
 import { printFilesList } from './ls/printFilesList.js';
 import { changeDirectoryUp } from './up/changeDirectoryUp.js';
 import { calculateHash } from './hash/calculateHash.js';
-import { compress } from './zip/compress.js';
+import { archiveFile } from './zip/archiveFile.js';
 import { 
     getUsernameFromArgs,
     getCurrentDirectory,
@@ -67,7 +67,10 @@ const run = () => {
                     await calculateHash(path);
                     break;
                 case 'compress':
-                    await compress(args);
+                    await archiveFile(args, 'compress');
+                    break;
+                case 'decompress':
+                    await archiveFile(args, 'decompress');
                     break;
                 case '.exit':
                     exitMessage(username);

@@ -5,6 +5,7 @@ export const homeDir = os.userInfo().homedir;
 export const printOsInfo = async (argument) => {
     if (!argument) {
         console.error('Missing argument');
+
         return;
     }
 
