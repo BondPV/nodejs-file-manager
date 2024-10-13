@@ -25,6 +25,6 @@ export const printFilesList = async (dir) => {
 
         console.table(tableData);
     } catch (e) {
-        console.log(`Operation failed ${e.message}`);
+        console.error(`Operation failed ${e.message}`);
     }
 };

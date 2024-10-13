@@ -1,9 +1,9 @@
 import { chdir } from 'node:process';
 
-export const changeDirectory = (path) => {
+export const changeDirectory = async (path) => {
     try {
         chdir(path);
     } catch (e) {
-        console.log(`Operation failed ${e.message}`);
+        console.error(`Operation failed ${e.message}`);
     }
 };

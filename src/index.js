@@ -1,36 +1,73 @@
 import process from 'node:process';
-import { printOsInfo } from './os/printOsInfo.js'
-import { changeDirectory } from './cd/changeDirectory.js'
-import { printFilesList } from './ls/printFilesList.js'
-import { changeDirectoryUp } from './up/changeDirectoryUp.js'
-import { calculateHash } from './hash/calculateHash.js'
-import { getUsernameFromArgs, getCurrentDirectory, currentDirectoryMessage, welcomeMessage, exitMessage } from "./helpers.js";
+import { readFile } from './fs/readFile.js';
+import { createEmptyFile } from './fs/createEmptyFile.js';
+import { renameFile } from './fs/renameFile.js';
+import { copyFile } from './fs/copyFile.js';
+import { moveFile } from './fs/moveFile.js';
+import { removeFile } from './fs/removeFile.js';
+import { homeDir, printOsInfo } from './os/printOsInfo.js';
+import { changeDirectory } from './cd/changeDirectory.js';
+import { printFilesList } from './ls/printFilesList.js';
+import { changeDirectoryUp } from './up/changeDirectoryUp.js';
+import { calculateHash } from './hash/calculateHash.js';
+import { compress } from './zip/compress.js';
+import { 
+    getUsernameFromArgs,
+    getCurrentDirectory,
+    currentDirectoryMessage,
+    welcomeMessage,
+    exitMessage,
+} from "./helpers.js";
 
 const run = () => {
     const username = getUsernameFromArgs();
 
     welcomeMessage(username);
+    changeDirectory(homeDir);
     currentDirectoryMessage();
 
     process.stdin.on('data', async (data) => {
-        const [command, argument] = data.toString().trim().split(' ');
+        const [command, ...args] = data.toString().trim().split(' ');
+        const [path] = args;
+        const flag = args.find(arg => arg.startsWith('--'));
 
         const switchCommand = async () => {
             switch (command) {
                 case 'cd':
-                    changeDirectory(argument);
+                    await changeDirectory(path);
                     break;
                 case 'up':
-                    changeDirectoryUp();
+                    await changeDirectoryUp();
                     break;
                 case 'ls':
                     await printFilesList(getCurrentDirectory());
                     break;
+                case 'cat':
+                    await readFile(path);
+                    break;
+                case 'add':
+                    await createEmptyFile(path);
+                    break;
+                case 'rn':
+                    await renameFile(args);
+                    break;
+                case 'cp':
+                    await copyFile(args);
+                    break;
+                case 'mv':
+                    await moveFile(args);
+                    break;
+                case 'rm':
+                    await removeFile(path);
+                    break;
                 case 'os':
-                    printOsInfo(argument);
+                    await printOsInfo(flag);
                     break;
                 case 'hash':
-                    await calculateHash(argument);
+                    await calculateHash(path);
+                    break;
+                case 'compress':
+                    await compress(args);
                     break;
                 case '.exit':
                     exitMessage(username);

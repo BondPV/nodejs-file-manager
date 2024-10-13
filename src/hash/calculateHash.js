@@ -14,6 +14,6 @@ export const calculateHash = async (file) => {
 
         console.log('Hash:', hash.digest('hex'));
     } catch (e) {
-        console.log(`Operation failed ${e.message}`);
+        console.error(`Operation failed ${e.message}`);
     }
 };

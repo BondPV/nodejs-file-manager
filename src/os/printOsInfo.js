@@ -1,8 +1,10 @@
 import os from 'node:os';
 
-export const printOsInfo = (argument) => {
+export const homeDir = os.userInfo().homedir;
+
+export const printOsInfo = async (argument) => {
     if (!argument) {
-        console.log('Missing argument');
+        console.error('Missing argument');
         return;
     }
 
@@ -19,7 +21,7 @@ export const printOsInfo = (argument) => {
                 });
                 break;
             case '--homedir':
-                console.log(`Home Directory: ${os.homedir()}`);
+                console.log(`Home Directory: ${homeDir}`);
                 break;
             case '--username':
                 const userInfo = os.userInfo();
@@ -29,10 +31,10 @@ export const printOsInfo = (argument) => {
                 console.log(`CPU Architecture: ${os.arch()}`);
                 break;
             default:
-                console.log('Invalid OS command');
+                console.error('Invalid OS command');
                 break;
         }
     } catch (e) {
-        console.log(`Operation failed ${e.message}`);
+        console.error(`Operation failed ${e.message}`);
     }
 };
