@@ -13,23 +13,22 @@ import { calculateHash } from './hash/calculateHash.js';
 import { archiveFile } from './zip/archiveFile.js';
 import { 
     getUsernameFromArgs,
+    getCommandArguments,
     getCurrentDirectory,
     currentDirectoryMessage,
     welcomeMessage,
     exitMessage,
-} from "./helpers.js";
+} from './helpers.js';
 
 const run = () => {
     const username = getUsernameFromArgs();
 
     welcomeMessage(username);
-    changeDirectory(homeDir);
+    // changeDirectory(homeDir);
     currentDirectoryMessage();
 
     process.stdin.on('data', async (data) => {
-        const [command, ...args] = data.toString().trim().split(' ');
-        const [path] = args;
-        const flag = args.find(arg => arg.startsWith('--'));
+        const { command, args, path, flag } = getCommandArguments(data);
 
         const switchCommand = async () => {
             switch (command) {
@@ -76,7 +75,7 @@ const run = () => {
                     exitMessage(username);
                     process.exit();
                 default:
-                    console.log('Invalid input');
+                    console.error('Invalid input');
                     break;
             }
         }
@@ -91,5 +90,6 @@ const run = () => {
         process.exit();
     });
 };
+
 
 run();

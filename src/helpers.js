@@ -16,4 +16,12 @@ export const exitMessage = (username) => {
 
 export const getCurrentDirectory = process.cwd;
 
-export const currentDirectoryMessage = () => console.log(`You are currently in ${getCurrentDirectory()}`)
+export const currentDirectoryMessage = () => console.log(`You are currently in ${getCurrentDirectory()}`);
+
+export const getCommandArguments = (data) => {
+    const [command, ...args] = data.toString().trim().split(' ');
+    const [path] = args;
+    const flag = args.find(arg => arg.startsWith('--'));
+
+    return { command, args, path, flag };
+};

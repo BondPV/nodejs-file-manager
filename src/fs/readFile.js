@@ -1,8 +1,5 @@
-import { createReadStream, promises as fsPromises } from 'node:fs';
-import { pipeline } from 'node:stream';
-import { promisify } from 'node:util';
-
-const pipelineAsync = promisify(pipeline);
+import { createReadStream } from 'node:fs';
+import { checkFileExists } from './checkFileExists.js';
 
 export const readFile = async (filePath) => {
     try {
@@ -10,9 +7,20 @@ export const readFile = async (filePath) => {
             throw new Error('Missing argument to command');
         }
 
-        const readStream = createReadStream(filePath, 'utf-8');
+        await checkFileExists(filePath);
 
-        await pipelineAsync(readStream, process.stdout);
+        const readStream = createReadStream(filePath, { encoding: 'utf-8' });
+
+        await new Promise((res, rej) => {
+            readStream.on('data', (chunk) => console.log(chunk));
+            readStream.on('end', () => {
+                console.log('Finished reading file.');
+                res();
+            });
+            readStream.on('error', (e) => {
+                rej(e);
+            });
+        });
     } catch (e) {
         console.error(`Operation failed: ${e.message}`);
     }

@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { createReadStream, createWriteStream } from 'node:fs';
-import { access, mkdir } from 'node:fs/promises';
+import { access } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
 import { checkFileExists } from './checkFileExists.js';
 import { checkDirectoryExists } from './checkDirectoryExists.js';
